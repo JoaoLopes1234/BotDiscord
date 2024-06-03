@@ -7,7 +7,7 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix='/', intents=intents)
 
-discord_token = 'MTI0NjkwMTYwMDcxOTczNjg1Mw.GTsr1f.KxWBqfduJCjgwFKtrY3SIQLtCHM4PYN-vDKJU0'
+discord_token = ''
 
 
 @bot.event
