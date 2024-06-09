@@ -10,7 +10,7 @@ client = discord.Client(intents=intents)
 
 bot = commands.Bot(command_prefix='/', intents=intents)
 
-discord_token = 'MTI0NjkwMTYwMDcxOTczNjg1Mw.G8YXcT.2sfY2pwsK_kgHKCgoZJbw0oYPym8BTvOYTvV3M'
+discord_token = ''
 
 profanity.load_censor_words()
 
