@@ -1,19 +1,18 @@
 from datetime import datetime
 import discord
+from better_profanity import profanity
 from discord.ext import commands, tasks
-import os
-from dotenv import load_dotenv
-
-
-load_dotenv()
-
-TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 
 intents = discord.Intents.default()
 intents.message_content = True
 
+client = discord.Client(intents=intents)
+
 bot = commands.Bot(command_prefix='/', intents=intents)
 
+discord_token = 'MTI0NjkwMTYwMDcxOTczNjg1Mw.G8YXcT.2sfY2pwsK_kgHKCgoZJbw0oYPym8BTvOYTvV3M'
+
+profanity.load_censor_words()
 
 
 @bot.event
@@ -21,12 +20,18 @@ async def on_ready():
     print(f'Logged in as {bot.user}')
     check_alarm.start()
 
+
 @bot.command()
 async def inverse(ctx, message):
 
     await ctx.send(message[::-1])
-    
-    
+
+
+
+@bot.command()
+async def CallAll(ctx):
+    await ctx.send("@everyone" + "Lets start our meeting")
+
 
 @tasks.loop(minutes=1)
 async def check_alarm():
@@ -35,6 +40,18 @@ async def check_alarm():
         channel = bot.get_channel(1246900934127124503)
         if channel:
             await channel.send('⏰ Alarme! São 10h da manhã!')
-            
+
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+
+    if profanity.contains_profanity(message.content):
+        await message.delete()
+        await message.channel.send(f"{message.author.mention}, sua mensagem foi removida por conter linguagem ofensiva.")
+
+    await bot.process_commands(message)
+
 
 bot.run(discord_token)
